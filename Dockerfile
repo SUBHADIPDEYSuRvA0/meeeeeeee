@@ -1,6 +1,6 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
-# Install dependencies for mediasoup and python pip
+# Install build dependencies and pip for mediasoup
 RUN apk add --no-cache \
     make \
     gcc \
@@ -9,7 +9,6 @@ RUN apk add --no-cache \
     py3-pip \
     linux-headers
 
-# Create app directory
 WORKDIR /app
 
 # Copy package files
@@ -18,23 +17,22 @@ COPY package*.json ./
 # Install production dependencies
 RUN npm ci --omit=dev
 
-# Copy application source
+# Copy app source code
 COPY . .
 
-# Create non-root user and group
+# Create non-root user and set ownership
 RUN addgroup -g 1001 -S nodejs \
  && adduser -S nodejs -u 1001 \
  && chown -R nodejs:nodejs /app
 
-# Switch to non-root user
 USER nodejs
 
-# Expose application port
+# Expose your app port
 EXPOSE 3000
 
-# Health check (optional: ensure healthcheck.js exists)
+# Optional health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node healthcheck.js || exit 1
 
-# Start the application
+# Start app
 CMD ["node", "server.js"]
