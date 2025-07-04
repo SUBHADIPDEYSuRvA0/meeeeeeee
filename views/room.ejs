@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fitetetseeeeee Meet - <%= roomId %></title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="large-video" id="large-video"></div>
+    <div class="filmstrip" id="filmstrip"></div>
+    <div class="toolbox">
+        <button id="muteBtn" title="Mute/Unmute"><i class="fas fa-microphone"></i></button>
+        <button id="videoBtn" title="Camera On/Off"><i class="fas fa-video"></i></button>
+        <button id="screenShareBtn" title="Screen Share"><i class="fas fa-desktop"></i></button>
+        <button id="chatBtn" title="Chat"><i class="fas fa-comment"></i></button>
+        <button id="emojiBtn" title="Emoji"><i class="fas fa-smile"></i></button>
+        <button id="raiseHandBtn" title="Raise Hand"><i class="fas fa-hand-paper"></i></button>
+        <button id="recordBtn" title="Record"><i class="fas fa-record-vinyl"></i></button>
+        <button id="hangupBtn" title="Hang Up"><i class="fas fa-phone-slash"></i></button>
+    </div>
+    <div class="chat-box" id="chatBox">
+        <div id="chatMessages"></div>
+        <input id="chatInput" type="text" placeholder="Type a message...">
+        <select id="emojiSelect">
+            <option value="" disabled selected>Select emoji</option>
+            <option value="😊">😊</option>
+            <option value="👍">👍</option>
+            <option value="👏">👏</option>
+        </select>
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://unpkg.com/mediasoup-client@3/lib/mediasoup-client.min.js"></script>
+    <script src="/js/client.js"></script>
+    <script>
+        const roomId = '<%= roomId %>';
+        const email = '<%= email %>';
+    </script>
+</body>
+</html>

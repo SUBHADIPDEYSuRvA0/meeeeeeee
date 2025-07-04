@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitetse Meet - <%= roomId %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="meeting-container">
+    <!-- Main Video Area -->
+    <div class="main-video-area">
+      <div class="main-video">
+        <video id="local-video" autoplay playsinline></video>
+        <div class="video-overlay">
+          <div class="meeting-info">
+            <span class="room-id">Room: <%= roomId %></span>
+            <span class="participant-count">
+              <i class="fas fa-users"></i>
+              <span id="participant-count">1</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Controls -->
+      <div class="controls">
+        <div class="control-group">
+          <button id="audio-btn" onclick="toggleAudio()" title="Toggle Microphone" class="control-btn">
+            <i class="fas fa-microphone"></i>
+          </button>
+          <button id="video-btn" onclick="toggleVideo()" title="Toggle Camera" class="control-btn">
+            <i class="fas fa-video"></i>
+          </button>
+        </div>
+        
+        <div class="control-group">
+          <button id="screen-btn" onclick="shareScreen()" title="Share Screen" class="control-btn">
+            <i class="fas fa-desktop"></i>
+          </button>
+          <button id="record-btn" onclick="toggleRecording()" title="Record Meeting" class="control-btn">
+            <i class="fas fa-record-vinyl"></i>
+          </button>
+          <button onclick="toggleChat()" title="Toggle Chat" class="control-btn">
+            <i class="fas fa-comments"></i>
+          </button>
+        </div>
+        
+        <div class="control-group">
+          <button onclick="hangup()" title="Leave Meeting" class="control-btn danger">
+            <i class="fas fa-phone-slash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Participants Sidebar -->
+    <div class="participants-sidebar">
+      <div class="sidebar-header">
+        <h3>Participants</h3>
+        <span class="participant-count-badge" id="sidebar-count">1</span>
+      </div>
+      <div id="participants" class="participants-grid"></div>
+    </div>
+
+    <!-- Chat Panel -->
+    <div class="chat-panel" id="chat-panel">
+      <div class="chat-header">
+        <h3><i class="fas fa-comments"></i> Chat</h3>
+        <button onclick="toggleChat()" title="Close Chat" class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="chat-container" class="chat-messages"></div>
+      <div class="chat-input-area">
+        <input 
+          id="chat-input" 
+          type="text" 
+          placeholder="Type a message..." 
+          onkeypress="if(event.key === 'Enter') sendMessage()"
+          maxlength="500"
+        >
+        <button onclick="sendMessage()" class="send-btn">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Chat Toggle Button -->
+    <button class="chat-toggle-btn" onclick="toggleChat()" title="Toggle Chat">
+      <i class="fas fa-comments"></i>
+      <span class="badge" id="chat-badge">0</span>
+    </button>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Connecting to meeting...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/mediasoup-client@3/lib/mediasoup-client.min.js"></script>
+  <script src="/js/client.js"></script>
+  <script>
+    // Hide loading overlay once page loads
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loading-overlay').style.display = 'none';
+      }, 1000);
+    });
+    
+    // Start the meeting
+    startMeeting('<%= roomId %>', '<%= email %>');
+  </script>
+</body>
+</html>
